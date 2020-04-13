@@ -1,28 +1,30 @@
 package com.example.datamahasiswa;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class DisplayMhs extends AppCompatActivity {
     int from_Where_I_Am_Coming = 0;
     private com.example.datamahasiswa.DBHelper mydb ;
-    TextView nomhs ;
-    TextView phone;
-    TextView nama;
+    EditText nomhs ;
+    EditText phone;
+    EditText nama;
     int id_To_Update = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_mhs);
-        nomhs = (TextView) findViewById(R.id.editTextNim);
-        nama = (TextView) findViewById(R.id.editTextName);
-        phone = (TextView) findViewById(R.id.editTextPhone);
+        nomhs = (EditText) findViewById(R.id.editTextNim);
+        nama = (EditText) findViewById(R.id.editTextName);
+        phone = (EditText) findViewById(R.id.editTextPhone);
         mydb = new com.example.datamahasiswa.DBHelper(this);
         Bundle extras = getIntent().getExtras();
         if(extras !=null) {
@@ -68,5 +70,20 @@ public class DisplayMhs extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    public  void  run(View view)
+    {
+        if (nomhs.getText().toString().equals("")|| nama.getText().toString().equals("")|| phone.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(),
+                    "Data Harus Disi Semua !", Toast.LENGTH_LONG).show();
+        }else {
+            mydb.insertContact(nomhs.getText().toString(), nama.getText().toString(), phone.getText().toString());
+            Toast.makeText(getApplicationContext(),
+                   "Insert data Berhasil !", Toast.LENGTH_LONG).show();
+
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(i);
+        }
     }
 }
